@@ -16,7 +16,7 @@ driver = webdriver.Chrome(executable_path = DRIVER_BIN)
 
 
 print('**** Running p_t... ****')
-driver.get('https://www.metro.ca/en/flyer')
+driver.get('')
 print(driver.title)
 time.sleep(8)
 
@@ -28,5 +28,4 @@ try:
 finally:
     driver.quit()
 
-driver.quit()
 print('**** Finished Running p_t ****')
