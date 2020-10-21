@@ -1,28 +1,32 @@
 import requests
-from bs4 import BeautifulSoup
+import time
+import os
+
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+#from bs4 import BeautifulSoup
+
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+DRIVER_BIN = os.path.join(PROJECT_ROOT, "bin/chromedriver")
+
+driver = webdriver.Chrome(executable_path = DRIVER_BIN)
+
 
 print('**** Running p_t... ****')
+driver.get('https://www.metro.ca/en/flyer')
+print(driver.title)
+time.sleep(8)
 
-URL = input('Enter target URL : ')
-print(URL)
+try: 
+    element = WebDriverWait(driver, 10).until(
+        EC.presence_of_all_elements_located((By.TAG_NAME , "tbody"))
+    )
+    print(element)
+finally:
+    driver.quit()
 
-headers_input = str(input("Enter your User-Agent : "))
-headers = {"User-Agent": headers_input}
-print(headers)
-
-target_price = input("Enter target Price : ")
-print(target_price)
-
-page = requests.get(URL, headers=headers)
-
-soup = BeautifulSoup(page.content, 'html.parser')
-
-title = soup.find(id="productTitle")
-price = soup.find(id="productPrice")
-
-convert_price = float(price[0:5])
-
-if(convert_price < target_price):
-    print("Price matched!")
-
+driver.quit()
 print('**** Finished Running p_t ****')
